@@ -2,4 +2,4 @@ django
 psycopg2-binary
 python-dotenv
 drf-yasg
-
+djangorestframework
