@@ -23,7 +23,7 @@ class AlbumSongSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.AlbumSong
-        fields = ["order_number", "title"]
+        fields = ["id", "order_number", "title"]
 
 
 class BaseSong(serializers.Serializer):
