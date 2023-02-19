@@ -10,7 +10,6 @@ class ArtistSerializer(serializers.ModelSerializer):
 
 
 class AlbumSerializer(serializers.ModelSerializer):
-    artist = serializers.CharField(source="artist.name")
     release_year = serializers.IntegerField(min_value=1900)
 
     class Meta:
@@ -78,4 +77,4 @@ class AlbumCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Album
-        fields = ["artist", "release_year"]
+        fields = ["id", "artist", "release_year"]
