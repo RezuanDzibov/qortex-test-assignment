@@ -26,7 +26,7 @@ class Song(models.Model):
 class AlbumSong(models.Model):
     album = models.ForeignKey(Album, related_name="songs", on_delete=models.CASCADE)
     song = models.ForeignKey(Song, related_name="album_songs", on_delete=models.CASCADE)
-    order_number = models.PositiveIntegerField(unique=True)
+    order_number = models.PositiveIntegerField()
 
     def __str__(self) -> str:
         return f"{self.song}"
