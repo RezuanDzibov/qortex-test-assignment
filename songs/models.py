@@ -13,7 +13,7 @@ class Album(models.Model):
     release_year = models.PositiveIntegerField()
 
     def __str__(self) -> str:
-        return f"{self.id} {self.artist}' album at {self.release_year}"
+        return f"{self.id} {self.artist}'s album at {self.release_year}"
 
 
 class Song(models.Model):
