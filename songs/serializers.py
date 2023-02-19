@@ -63,7 +63,7 @@ class SongRetrieveSerializer(serializers.ModelSerializer):
         return {
             "id": instance.id,
             "title": instance.title,
-            "albums": [album_song.album.id for album_song in instance.album_songs.all()]
+            "in_albums": [album_song.album.id for album_song in instance.album_songs.all()]
         }
 
 
