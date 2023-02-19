@@ -60,4 +60,4 @@ class AlbumRetrieveSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Album
-        fields = ["artist", "release_year", "songs"]
+        fields = ["id", "artist", "release_year", "songs"]
