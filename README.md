@@ -10,5 +10,5 @@ Windows: `copy .env.example .env`\
 Linux/MacOS: `cp .env.example .env`
 
 ## Запуск.
-`docker-compose up --build
+`docker-compose up --build`
 # Хорошего дня вам.
