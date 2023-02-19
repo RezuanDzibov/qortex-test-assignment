@@ -10,6 +10,7 @@ class ArtistAdmin(admin.ModelAdmin):
 
 class AlbumSongInline(admin.StackedInline):
     model = models.AlbumSong
+    readonly_fields = ["order_number"]
 
 
 @admin.register(models.Album)

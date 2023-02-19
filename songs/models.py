@@ -28,5 +28,10 @@ class AlbumSong(models.Model):
     song = models.ForeignKey(Song, related_name="album_songs", on_delete=models.CASCADE)
     order_number = models.PositiveIntegerField()
 
+    def save(self, *args, **kwargs):
+        if not self.order_number:
+            self.order_number = self.album.songs.all().count() + 1
+        return super().save(*args, **kwargs)
+
     def __str__(self) -> str:
         return f"{self.song}"

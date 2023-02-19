@@ -2,7 +2,6 @@ from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import NotFound, APIException
 
 from . import models, serializers
-from .utils import get_next_order_number
 
 
 def get_album(id_: int) -> models.Album:
@@ -23,7 +22,6 @@ def add_song_to_album(data: dict) -> models.Album:
         if album.songs.filter(song=song):
             raise APIException(code=409, detail="Already exists")
         models.AlbumSong.objects.create(
-            order_number=get_next_order_number(album=album),
             song=song,
             album=album
         )
