@@ -29,7 +29,6 @@ class AlbumSongSerializer(serializers.ModelSerializer):
 
 class AddSongToAlbumSerializer(serializers.Serializer):
     song = serializers.IntegerField(min_value=1)
-    order_number = serializers.IntegerField(min_value=1)
 
 
 class SongCreateRetrieve(serializers.ModelSerializer):
