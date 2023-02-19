@@ -19,6 +19,7 @@ class AlbumSerializer(serializers.ModelSerializer):
 
 
 class AlbumSongSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source="song.id")
     title = serializers.CharField(source="song.title")
 
     class Meta:
