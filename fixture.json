@@ -16,5 +16,109 @@
             "groups": [],
             "user_permissions": []
         }
+    },
+    {
+        "model": "songs.artist",
+        "pk": 1,
+        "fields": {
+            "name": "Artist 1"
+        }
+    },
+    {
+        "model": "songs.album",
+        "pk": 1,
+        "fields": {
+            "artist": 1,
+            "release_year": 2023
+        }
+    },
+    {
+        "model": "songs.album",
+        "pk": 2,
+        "fields": {
+            "artist": 1,
+            "release_year": 2023
+        }
+    },
+    {
+        "model": "songs.song",
+        "pk": 1,
+        "fields": {
+            "title": "Song 1"
+        }
+    },
+    {
+        "model": "songs.song",
+        "pk": 2,
+        "fields": {
+            "title": "Song 2"
+        }
+    },
+    {
+        "model": "songs.song",
+        "pk": 3,
+        "fields": {
+            "title": "Song 3"
+        }
+    },
+    {
+        "model": "songs.song",
+        "pk": 4,
+        "fields": {
+            "title": "Song 4"
+        }
+    },
+    {
+        "model": "songs.song",
+        "pk": 5,
+        "fields": {
+            "title": "Song 5"
+        }
+    },
+    {
+        "model": "songs.albumsong",
+        "pk": 1,
+        "fields": {
+            "album": 2,
+            "song": 1,
+            "order_number": 1
+        }
+    },
+    {
+        "model": "songs.albumsong",
+        "pk": 2,
+        "fields": {
+            "album": 2,
+            "song": 2,
+            "order_number": 2
+        }
+    },
+    {
+        "model": "songs.albumsong",
+        "pk": 3,
+        "fields": {
+            "album": 2,
+            "song": 4,
+            "order_number": 3
+        }
+    },
+    {
+        "model": "songs.albumsong",
+        "pk": 4,
+        "fields": {
+            "album": 1,
+            "song": 3,
+            "order_number": 1
+        }
+    },
+    {
+        "model": "songs.albumsong",
+        "pk": 5,
+        "fields": {
+            "album": 1,
+            "song": 5,
+            "order_number": 2
+        }
     }
+
 ]
