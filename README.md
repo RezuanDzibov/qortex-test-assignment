@@ -11,7 +11,7 @@ Linux/MacOS: `cp .env.example .env`
 
 ### Запуск.
 `docker-compose up --build`
-## Есть тестовый админ пользователь.
+## Есть тестовый админ пользователь. И добавлено несколько тестовых объектов.
 `username: admin` \
 `password: admin`
 ### Сама админика: http://127.0.0.1:8000/admin/
