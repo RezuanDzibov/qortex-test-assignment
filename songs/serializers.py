@@ -7,7 +7,7 @@ from .utils import get_current_year
 class ArtistSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Artist
-        fields = ["name"]
+        fields = ["id", "name"]
 
 
 class AddSongToAlbumSerializer(serializers.Serializer):
