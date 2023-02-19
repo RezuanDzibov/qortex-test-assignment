@@ -71,3 +71,11 @@ class SongSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Song
         fields = ["title"]
+
+
+class AlbumCreateSerializer(serializers.ModelSerializer):
+    release_year = serializers.IntegerField(min_value=1900)
+
+    class Meta:
+        model = models.Album
+        fields = ["artist", "release_year"]

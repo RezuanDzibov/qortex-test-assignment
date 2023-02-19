@@ -14,7 +14,8 @@ class ArtistViewSet(ModelViewSet):
 
 class AlbumViewSet(ModelViewSet):
     queryset = models.Album.objects.all()
-    serializer_class = serializers.AlbumSerializer
+    default_serializer_class = serializers.AlbumSerializer
+    serializer_classes = {"create": serializers.AlbumCreateSerializer}
     http_method_names = ["get", "post", "put", "delete"]
 
     @swagger_auto_schema(responses={200: serializers.AlbumRetrieveSerializer()})
@@ -22,6 +23,9 @@ class AlbumViewSet(ModelViewSet):
         instance = self.get_object()
         serializer = serializers.AlbumRetrieveSerializer(instance=instance)
         return Response(serializer.data)
+
+    def get_serializer_class(self):
+        return self.serializer_classes.get(self.action, self.default_serializer_class)
 
 
 class AddSongToAlbumView(APIView):
