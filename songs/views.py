@@ -37,17 +37,6 @@ class AddSongToAlbumView(APIView):
         return Response(serializer.data)
 
 
-class CreateSongView(APIView):
-    @swagger_auto_schema(
-        request_body=serializers.CreateSongSerializer,
-        responses={200: serializers.SongCreateRetrieve()}
-    )
-    def post(self, request, *args, **kwargs):
-        song = services.create_song(data=request.data.copy())
-        serializer = serializers.SongCreateRetrieve(instance=song)
-        return Response(serializer.data)
-
-
 class RemoveSongFromAlbumView(APIView):
     @swagger_auto_schema(
         request_body=serializers.SongRemoveFromAlbum,
@@ -63,7 +52,7 @@ class RemoveSongFromAlbumView(APIView):
 class SongViewSet(ModelViewSet):
     queryset = models.Song.objects.all()
     serializer_class = serializers.SongSerializer
-    http_method_names = ["get", "put", "delete"]
+    http_method_names = ["get", "put", "delete", "post"]
 
     @swagger_auto_schema(
         responses={200: serializers.SongRetrieveSerializer()}

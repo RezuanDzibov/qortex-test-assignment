@@ -32,12 +32,6 @@ class AddSongToAlbumSerializer(serializers.Serializer):
     order_number = serializers.IntegerField(min_value=1)
 
 
-class CreateSongSerializer(serializers.Serializer):
-    title = serializers.CharField(max_length=255)
-    album = serializers.IntegerField(min_value=1)
-    order_number = serializers.IntegerField(min_value=1)
-
-
 class SongCreateRetrieve(serializers.ModelSerializer):
     title = serializers.CharField(source="song.title")
     album = serializers.CharField(source="album.pk")
