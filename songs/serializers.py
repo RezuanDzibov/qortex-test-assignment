@@ -49,6 +49,11 @@ class SongCreateRetrieve(serializers.ModelSerializer):
         fields = ["id", "order_number", "title", "album"]
 
 
+class SongRemoveFromAlbum(serializers.Serializer):
+    album = serializers.IntegerField(min_value=1)
+    song = serializers.IntegerField(min_value=1)
+
+
 class AlbumRetrieveSerializer(serializers.ModelSerializer):
     release_year = serializers.IntegerField(min_value=1900)
     songs = AlbumSongSerializer(many=True, read_only=True)
