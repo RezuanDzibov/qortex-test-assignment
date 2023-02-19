@@ -27,8 +27,11 @@ class AlbumSongSerializer(serializers.ModelSerializer):
         fields = ["id", "order_number", "title"]
 
 
-class BaseSong(serializers.Serializer):
+class OrderNumberMixin:
     order_number = serializers.IntegerField(min_value=1)
+
+
+class BaseSong(serializers.Serializer, OrderNumberMixin):
     album = serializers.IntegerField(min_value=1)
 
 
@@ -40,9 +43,8 @@ class CreateSongSerializer(BaseSong):
     title = serializers.CharField(max_length=255)
 
 
-class SongCreateRetrieve(serializers.ModelSerializer):
+class SongCreateRetrieve(serializers.ModelSerializer, OrderNumberMixin):
     title = serializers.CharField(source="song.title")
-    order_number = serializers.IntegerField(min_value=1)
     album = serializers.CharField(source="album.pk")
 
     class Meta:
