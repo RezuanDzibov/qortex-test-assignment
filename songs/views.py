@@ -44,3 +44,13 @@ class CreateSongView(APIView):
         song = services.create_song(data=request.data.copy())
         serializer = serializers.SongCreateRetrieve(instance=song)
         return Response(serializer.data)
+
+
+class RemoveSongFromAlbumView(APIView):
+    @swagger_auto_schema(
+        request_body=serializers.SongRemoveFromAlbum,
+        responses={200: serializers.AlbumRetrieveSerializer()}
+    )
+    def delete(self, request, *args, **kwargs):
+        services.remove_song_from_album(data=request.data.copy())
+        return Response(status=204)
