@@ -60,3 +60,11 @@ class SongViewSet(ModelViewSet):
     queryset = models.Song.objects.all()
     serializer_class = serializers.ArtistSerializer
     http_method_names = ["get", "put", "delete"]
+
+    @swagger_auto_schema(
+        responses={200: serializers.SongRetrieveSerializer()}
+    )
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = serializers.SongRetrieveSerializer(instance=instance)
+        return Response(serializer.data, status=200)
