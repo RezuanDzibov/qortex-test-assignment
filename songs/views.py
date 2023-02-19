@@ -54,3 +54,9 @@ class RemoveSongFromAlbumView(APIView):
     def delete(self, request, *args, **kwargs):
         services.remove_song_from_album(data=request.data.copy())
         return Response(status=204)
+
+
+class SongViewSet(ModelViewSet):
+    queryset = models.Song.objects.all()
+    serializer_class = serializers.ArtistSerializer
+    http_method_names = ["get", "put", "delete"]
