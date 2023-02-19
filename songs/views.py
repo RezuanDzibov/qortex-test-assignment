@@ -1,7 +1,7 @@
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 
 from . import models, serializers, services
 
@@ -28,6 +28,20 @@ class AlbumViewSet(ModelViewSet):
         return self.serializer_classes.get(self.action, self.default_serializer_class)
 
 
+class SongViewSet(ModelViewSet):
+    queryset = models.Song.objects.all()
+    serializer_class = serializers.SongSerializer
+    http_method_names = ["get", "put", "delete", "post"]
+
+    @swagger_auto_schema(
+        responses={200: serializers.SongRetrieveSerializer()}
+    )
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = serializers.SongRetrieveSerializer(instance=instance)
+        return Response(serializer.data, status=200)
+
+
 class AddSongToAlbumView(APIView):
     @swagger_auto_schema(
         request_body=serializers.AddSongToAlbumSerializer,
@@ -51,17 +65,3 @@ class RemoveSongFromAlbumView(APIView):
         data["album"] = kwargs["pk"]
         services.remove_song_from_album(data=data)
         return Response(status=204)
-
-
-class SongViewSet(ModelViewSet):
-    queryset = models.Song.objects.all()
-    serializer_class = serializers.SongSerializer
-    http_method_names = ["get", "put", "delete", "post"]
-
-    @swagger_auto_schema(
-        responses={200: serializers.SongRetrieveSerializer()}
-    )
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = serializers.SongRetrieveSerializer(instance=instance)
-        return Response(serializer.data, status=200)
