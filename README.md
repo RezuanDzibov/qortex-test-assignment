@@ -1,7 +1,4 @@
-# Привет ✋. 
-## Есть тестовый админ пользователь.
-`username: admin` \
-`password: admin`
+# Привет ✋.
 ### Вам нужно скопировать репозиторий.
 `git clone https://github.com/RezuanDzibov/qortex-test-assignment`
 
@@ -14,4 +11,8 @@ Linux/MacOS: `cp .env.example .env`
 
 ### Запуск.
 `docker-compose up --build`
+## Есть тестовый админ пользователь.
+`username: admin` \
+`password: admin`
+## А по ссылке http://127.0.0.1:8000/swagger/ можно подергать ручки swagger-ом.
 # Хорошего дня вам.
