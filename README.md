@@ -2,10 +2,10 @@
 Вам нужно скопировать репозиторий.\
 `git clone https://github.com/RezuanDzibov/qortex-test-assignment`
 
-Создать файл .env и заполнить его или использовать .env.example с помощью такой команды.
+Создать файл .env и заполнить его. Или использовать .env.example с помощью такой команды.
 
 Windows: `copy .env.example .env`\
-Linux/MacOS: `cp .env.example .env`\
+Linux/MacOS: `cp .env.example .env`
 
 Запуск.
 `docker-compose up --build`
