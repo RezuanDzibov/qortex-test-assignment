@@ -70,4 +70,4 @@ class SongRetrieveSerializer(serializers.ModelSerializer):
 class SongSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Song
-        fields = ["title"]
+        fields = ["id", "title"]
