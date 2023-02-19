@@ -16,6 +16,7 @@ services:
       - "8000:8000"
   db:
     container_name: db
+    env_file: .env
     restart: always
     image: postgres
     volumes:
