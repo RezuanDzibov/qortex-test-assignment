@@ -42,4 +42,5 @@ def create_song(data: dict) -> models.AlbumSong:
                 )
             return album_song
         except IntegrityError as exc:
+            #TODO: implement except
             pass
