@@ -62,3 +62,16 @@ class AlbumRetrieveSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Album
         fields = ["id", "artist", "release_year", "songs"]
+
+
+class SongRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Song
+        fields = ["id", "title"]
+
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "title": instance.title,
+            "albums": [album_song.album.id for album_song in instance.album_songs.all()]
+        }
