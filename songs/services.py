@@ -20,7 +20,7 @@ def add_song_to_album(data: dict) -> models.Album:
         album = get_album(id_=data["album"])
         song = get_song(id_=serializer.validated_data["song"])
         if album.songs.filter(song=song):
-            raise APIException(code=409, detail="Already exists")
+            raise APIException(code=409, detail="This song already associated with the album")
         models.AlbumSong.objects.create(
             song=song,
             album=album
