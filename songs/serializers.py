@@ -77,3 +77,9 @@ class SongRetrieveSerializer(serializers.ModelSerializer):
             "title": instance.title,
             "albums": [album_song.album.id for album_song in instance.album_songs.all()]
         }
+
+
+class SongSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Song
+        fields = ["title"]
