@@ -58,7 +58,7 @@ class RemoveSongFromAlbumView(APIView):
 
 class SongViewSet(ModelViewSet):
     queryset = models.Song.objects.all()
-    serializer_class = serializers.ArtistSerializer
+    serializer_class = serializers.SongSerializer
     http_method_names = ["get", "put", "delete"]
 
     @swagger_auto_schema(
