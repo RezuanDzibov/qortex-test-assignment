@@ -11,7 +11,7 @@ Linux/MacOS: `cp .env.example .env`
 
 ### Запуск.
 `docker-compose up --build`
-## Есть тестовый админ пользователь.
+## Есть тестовый админ пользователь. Сама админика: http://127.0.0.1:8000/admin/
 `username: admin` \
 `password: admin`
 ## А по ссылке http://127.0.0.1:8000/swagger/ можно подергать ручки swagger-ом.
