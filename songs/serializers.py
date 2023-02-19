@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from . import models
+from .utils import get_current_year
 
 
 class ArtistSerializer(serializers.ModelSerializer):
@@ -14,15 +15,7 @@ class AddSongToAlbumSerializer(serializers.Serializer):
 
 
 class AlbumSerializer(serializers.ModelSerializer):
-    release_year = serializers.IntegerField(min_value=1900)
-
-    class Meta:
-        model = models.Album
-        fields = ["id", "artist", "release_year"]
-
-
-class AlbumCreateSerializer(serializers.ModelSerializer):
-    release_year = serializers.IntegerField(min_value=1900)
+    release_year = serializers.IntegerField(min_value=1900, default=get_current_year, required=False)
 
     class Meta:
         model = models.Album
