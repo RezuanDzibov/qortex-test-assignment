@@ -1,5 +1,6 @@
 from django.db import IntegrityError, transaction
 from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import NotFound
 
 from . import models, serializers
 
@@ -44,3 +45,13 @@ def create_song(data: dict) -> models.AlbumSong:
         except IntegrityError as exc:
             #TODO: implement except
             pass
+
+
+def remove_song_from_album(data: dict) -> models.Album:
+    album = get_album(id_=data["album"])
+    song = album.songs.filter(pk=data["song"])
+    if not song:
+        raise NotFound()
+    song.delete()
+    album.refresh_from_db()
+    return album
