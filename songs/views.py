@@ -52,7 +52,7 @@ class AddSongToAlbumView(APIView):
 
 class RemoveSongFromAlbumView(APIView):
     @swagger_auto_schema(
-        request_body=serializers.SongRemoveFromAlbum,
+        request_body=serializers.SongRemoveFromAlbumSerializer,
         responses={204: ""}
     )
     def delete(self, request, *args, **kwargs):

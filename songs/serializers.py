@@ -40,7 +40,7 @@ class AlbumRetrieveSerializer(serializers.ModelSerializer):
         fields = ["id", "artist", "release_year", "songs"]
 
 
-class SongCreateRetrieve(serializers.ModelSerializer):
+class SongCreateRetrieveSerializer(serializers.ModelSerializer):
     title = serializers.CharField(source="song.title")
     album = serializers.CharField(source="album.pk")
     order_number = serializers.IntegerField(min_value=1)
@@ -50,7 +50,7 @@ class SongCreateRetrieve(serializers.ModelSerializer):
         fields = ["id", "order_number", "title", "album"]
 
 
-class SongRemoveFromAlbum(serializers.Serializer):
+class SongRemoveFromAlbumSerializer(serializers.Serializer):
     song = serializers.IntegerField(min_value=1)
 
 
