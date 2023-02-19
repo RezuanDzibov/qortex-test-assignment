@@ -49,7 +49,7 @@ class CreateSongView(APIView):
 class RemoveSongFromAlbumView(APIView):
     @swagger_auto_schema(
         request_body=serializers.SongRemoveFromAlbum,
-        responses={200: serializers.AlbumRetrieveSerializer()}
+        responses={200: ""}
     )
     def delete(self, request, *args, **kwargs):
         services.remove_song_from_album(data=request.data.copy())
