@@ -30,7 +30,9 @@ class AddSongToAlbumView(APIView):
         responses={200: serializers.AlbumRetrieveSerializer()}
     )
     def post(self, request, *args, **kwargs):
-        album = services.add_song_to_album(data=request.data.copy())
+        data = request.data.copy()
+        data["album"] = int(kwargs["pk"])
+        album = services.add_song_to_album(data=data)
         serializer = serializers.AlbumRetrieveSerializer(instance=album)
         return Response(serializer.data)
 
@@ -52,7 +54,9 @@ class RemoveSongFromAlbumView(APIView):
         responses={204: ""}
     )
     def delete(self, request, *args, **kwargs):
-        services.remove_song_from_album(data=request.data.copy())
+        data = request.data.copy()
+        data["album"] = kwargs["pk"]
+        services.remove_song_from_album(data=data)
         return Response(status=204)
 
 

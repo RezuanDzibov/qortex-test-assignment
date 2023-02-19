@@ -18,7 +18,7 @@ def get_song(id_: int) -> models.Song:
 def add_song_to_album(data: dict) -> models.Album:
     serializer = serializers.AddSongToAlbumSerializer(data=data)
     if serializer.is_valid(raise_exception=True):
-        album = get_album(id_=serializer.validated_data["album"])
+        album = get_album(id_=data["album"])
         song = get_song(id_=serializer.validated_data["song"])
         models.AlbumSong.objects.create(
             order_number=serializer.validated_data["order_number"],
@@ -32,7 +32,7 @@ def add_song_to_album(data: dict) -> models.Album:
 def create_song(data: dict) -> models.AlbumSong:
     serializer = serializers.CreateSongSerializer(data=data)
     if serializer.is_valid(raise_exception=True):
-        album = get_album(id_=serializer.validated_data.get("album"))
+        album = get_album(id_=data["album"])
         try:
             with transaction.atomic():
                 song = models.Song.objects.create(title=serializer.validated_data["title"])

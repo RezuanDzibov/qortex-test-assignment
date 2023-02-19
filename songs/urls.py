@@ -9,8 +9,8 @@ router.register("albums", views.AlbumViewSet, basename="albums")
 router.register("songs", views.SongViewSet, basename="songs")
 
 urlpatterns = [
-    path("albums/add_song/", views.AddSongToAlbumView.as_view(), name="add_song_to_album"),
-    path("albums/remove_song/", views.RemoveSongFromAlbumView.as_view(), name="remove_song_from_album"),
+    path("albums/<int:pk>/add_song/", views.AddSongToAlbumView.as_view(), name="add_song_to_album"),
+    path("albums/<int:pk>/remove_song/", views.RemoveSongFromAlbumView.as_view(), name="remove_song_from_album"),
     path("songs/", views.CreateSongView.as_view(), name="create_song"),
 ]
 
