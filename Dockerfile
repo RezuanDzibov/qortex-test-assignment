@@ -1,25 +1,41 @@
-FROM python:3
+FROM python:3.11-slim
 
-ENV APP_HOME=/home/app
+RUN apt update \
+    && apt install python3 netcat curl -y \
+    && rm -rf /var/cache/apt/* /var/lib/apt/lists/*
 
-RUN mkdir -p $APP_HOME
+ENV PYTHONUNBUFFERED=1 \
+    \
+    # python
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONFAULTHANDLER=1 \
+    PYTHONHASHSEED=random \
+    \
+    # pip
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    \
+    # poetry
+    POETRY_VERSION=1.3.2 \
+    \
+    APP_HOME="/home/app" \
+    PATH="/opt/poetry/bin:$PATH" \
+    PATH="/root/.local/bin:$PATH"
+
+RUN mkdir -p $APP_HOME $APP_HOME/staticfiles $APP_HOME/mediafiles
 
 WORKDIR $APP_HOME
 
-RUN apt update && apt install python3 netcat -y
+COPY pyproject.toml poetry.lock $APP_HOME
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+RUN pip install --upgrade pip \
+  && curl -sSL https://install.python-poetry.org | python \
+  && poetry config virtualenvs.create false \
+  && poetry install --only main --no-interaction --no-ansi --no-root
 
-RUN pip install --upgrade pip
+COPY . $APP_HOME
 
-COPY . $WEB_HOME
-RUN mkdir $APP_HOME/staticfiles
-RUN mkdir $APP_HOME/mediafiles
-
-RUN pip install -r $APP_HOME/requirements.txt
-
-ENV PYTHONPATH "${PYTHONPATH}:${WEB_HOME}"
-
-RUN chmod +x /home/app/entrypoint.sh
+RUN chmod +x $APP_HOME/entrypoint.sh
 ENTRYPOINT ["/home/app/entrypoint.sh"]
