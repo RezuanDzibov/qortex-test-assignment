@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-RUN apt update && apt install python3 netcat -y curl && rm -rf /var/cache/apt/* /var/lib/apt/lists/*
+RUN apt update && apt install python3 netcat -y && rm -rf /var/cache/apt/* /var/lib/apt/lists/*
 
 ENV PYTHONPATH "=${PYTHONPATH}:${APP_HOME}"
 ENV PYTHONDONTWRITEBYTECODE=1
