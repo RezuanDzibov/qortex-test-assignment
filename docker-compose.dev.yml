@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  web:
+    container_name: web_app
+    build: .
+    env_file: .env
+    environment:
+      SQL_HOST: "db"
+    restart: always
+    depends_on:
+      - db
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - static_volume:/home/app/staticfiles
+      - media_volume:/home/app/mediafiles
+    ports:
+      - "8000:8000"
+  db:
+    container_name: db
+    env_file: .env
+    restart: always
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: ${SQL_USER}
+      POSTGRES_PASSWORD: ${SQL_PASSWORD}
+      POSTGRES_DB: ${SQL_DATABASE}
+      POSTGRES_PORT: ${SQL_PORT}
+    expose:
+      - ${SQL_PORT}
+    ports:
+      - "5432:5432"
+
+volumes:
+  static_volume:
+  media_volume:
+  postgres_data:
