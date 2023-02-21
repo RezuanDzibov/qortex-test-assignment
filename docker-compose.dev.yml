@@ -5,6 +5,8 @@ services:
     container_name: web_app
     build: .
     env_file: .env
+    environment:
+      SQL_HOST: "db"
     restart: always
     depends_on:
       - db
