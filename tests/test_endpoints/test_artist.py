@@ -1,3 +1,5 @@
+from random import choice, randint
+
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
@@ -21,3 +23,15 @@ class TestRetrieveArtist:
         response = api_client.get(reverse("artists-detail", kwargs={"pk": artist.id}))
         assert response.status_code == 200
 
+    def test_multiple_artists_exist(self, api_client: APIClient, artists: [Artist]):
+        artist = choice(artists)
+        response = api_client.get(reverse("artists-detail", kwargs={"pk": artist.id}))
+        assert response.status_code
+
+    def test_not_found(self, db, api_client: APIClient):
+        response = api_client.get(reverse("artists-detail", kwargs={"pk": randint(1, 6)}))
+        assert response.status_code == 404
+
+    def test_not_exists_artist(self, api_client: APIClient, artists: [Artist]):
+        response = api_client.get(reverse("artists-detail", kwargs={"pk": 1000}))
+        assert response.status_code == 404
