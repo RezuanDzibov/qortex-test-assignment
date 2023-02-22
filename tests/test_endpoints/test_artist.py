@@ -14,3 +14,10 @@ class TestCreateArtist:
     def test_invalid_data(self, db, api_client: APIClient):
         response = api_client.post(self.url, data={"name": "a" * 256})
         assert response.status_code == 400
+
+
+class TestRetrieveArtist:
+    def test_successful(self, api_client: APIClient, artist: Artist):
+        response = api_client.get(reverse("artists-detail", kwargs={"pk": artist.id}))
+        assert response.status_code == 200
+
