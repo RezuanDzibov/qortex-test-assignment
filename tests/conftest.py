@@ -1,3 +1,7 @@
+from functools import partial
+from random import randint
+from typing import List
+
 import pytest
 from rest_framework.test import APIClient
 
@@ -19,3 +23,12 @@ def built_artist() -> models.Artist:
 def artist(db, built_artist: models.Artist) -> models.Artist:
     return factories.ArtistFactory.create()
 
+
+@pytest.fixture(scope="function")
+def artists(request, db) -> [models.Artist]:
+    func = partial(factories.ArtistFactory.create_batch)
+    if hasattr(request, "param") and request.param is int and request.param > 0:
+        artists = func(request.param)
+    else:
+        artists = func(randint(1, 6))
+    return artists
