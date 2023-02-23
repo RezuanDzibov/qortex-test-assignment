@@ -20,10 +20,12 @@ class TestRetrieveArtist:
     def test_successful(self, api_client: APIClient, artist: Artist):
         response = api_client.get(reverse("artists-detail", kwargs={"pk": artist.id}))
         assert response.status_code == 200
+        assert response.data["id"] == artist.id
 
     def test_multiple_artists_exist(self, api_client: APIClient, artists: [Artist]):
         response = api_client.get(reverse("artists-detail", kwargs={"pk": artists[1].id}))
         assert response.status_code
+        assert response.data["id"] == artists[1].id
 
     def test_not_found(self, db, api_client: APIClient):
         response = api_client.get(reverse("artists-detail", kwargs={"pk": 1000}))
