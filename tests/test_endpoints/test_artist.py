@@ -10,6 +10,7 @@ class TestCreateArtist:
     def test_successful(self, db, api_client: APIClient, built_artist: Artist):
         response = api_client.post(self.url, data={"name": built_artist.name})
         assert response.status_code == 201
+        assert response.data["name"] == built_artist.name
 
     def test_invalid_data(self, db, api_client: APIClient):
         response = api_client.post(self.url, data={"name": "a" * 256})
