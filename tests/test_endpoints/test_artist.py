@@ -1,3 +1,5 @@
+from functools import partial
+
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
@@ -19,20 +21,22 @@ class TestCreateArtist:
 
 
 class TestRetrieveArtist:
+    url = partial(reverse, "artists-detail")
+
     def test_successful(self, api_client: APIClient, artist: Artist):
-        response = api_client.get(reverse("artists-detail", kwargs={"pk": artist.id}))
+        response = api_client.get(self.url(kwargs={"pk": artist.id}))
         assert response.status_code == 200
         assert response.data == ArtistSerializer(artist).data
 
     def test_multiple_artists_exist(self, api_client: APIClient, artists: [Artist]):
-        response = api_client.get(reverse("artists-detail", kwargs={"pk": artists[1].id}))
+        response = api_client.get(self.url(kwargs={"pk": artists[1].id}))
         assert response.status_code
         assert response.data == ArtistSerializer(artists[1]).data
 
     def test_not_found(self, db, api_client: APIClient):
-        response = api_client.get(reverse("artists-detail", kwargs={"pk": 1000}))
+        response = api_client.get(self.url(kwargs={"pk": 1000}))
         assert response.status_code == 404
 
     def test_not_exists_artist(self, api_client: APIClient, artists: [Artist]):
-        response = api_client.get(reverse("artists-detail", kwargs={"pk": 1000}))
+        response = api_client.get(self.url(kwargs={"pk": 1000}))
         assert response.status_code == 404
