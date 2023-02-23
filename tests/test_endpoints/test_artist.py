@@ -2,6 +2,7 @@ from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
 
 from songs.models import Artist
+from songs.serializers import ArtistSerializer
 
 
 class TestCreateArtist:
@@ -21,12 +22,12 @@ class TestRetrieveArtist:
     def test_successful(self, api_client: APIClient, artist: Artist):
         response = api_client.get(reverse("artists-detail", kwargs={"pk": artist.id}))
         assert response.status_code == 200
-        assert response.data["id"] == artist.id
+        assert response.data == ArtistSerializer(artist).data
 
     def test_multiple_artists_exist(self, api_client: APIClient, artists: [Artist]):
         response = api_client.get(reverse("artists-detail", kwargs={"pk": artists[1].id}))
         assert response.status_code
-        assert response.data["id"] == artists[1].id
+        assert response.data == ArtistSerializer(artists[1]).data
 
     def test_not_found(self, db, api_client: APIClient):
         response = api_client.get(reverse("artists-detail", kwargs={"pk": 1000}))
