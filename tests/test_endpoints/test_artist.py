@@ -92,4 +92,9 @@ class TestUpdateArtist:
 
 
 class TestDeleteArtist:
-    pass
+    url = partial(reverse, "artists-detail")
+
+    def test_successful(self, api_client: APIClient, artist: Artist):
+        response = api_client.delete(self.url(kwargs={"pk": artist.id}))
+        assert response.status_code == 204
+        assert api_client.get(self.url(kwargs={"pk": artist.id})).status_code == 404
