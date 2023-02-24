@@ -54,3 +54,38 @@ class TestListArtist:
         response = api_client.get(self.url)
         assert response.status_code == 200
         assert not response.data
+
+
+class TestUpdateArtist:
+    url = partial(reverse, "artists-detail")
+
+    def test_successful(self, api_client: APIClient, artist: Artist):
+        name = "name"
+        artist.name = name
+        response = api_client.put(self.url(kwargs={"pk": artist.id}), data={"name": name})
+        assert response.status_code == 200
+        assert response.data == ArtistSerializer(instance=artist).data
+
+    def test_multiple_exist_successful(self, api_client: APIClient, artists: [Artist]):
+        artist = artists[0]
+        name = "name"
+        artist.name = name
+        response = api_client.put(self.url(kwargs={"pk": artist.id}), data={"name": name})
+        assert response.status_code == 200
+        assert response.data == ArtistSerializer(instance=artist).data
+
+    def test_with_invalid_data(self, api_client: APIClient, artist: Artist):
+        response = api_client.put(self.url(kwargs={"pk": artist.id}), data={"name": "s" * 256})
+        assert response.status_code == 400
+
+    def test_not_found(self, db, api_client: APIClient):
+        response = api_client.put(self.url(kwargs={"pk": 1}), data={"name": "name"})
+        assert response.status_code == 404
+
+    def test_not_found_exist(self, api_client: APIClient, artists: [Artist]):
+        response = api_client.put(self.url(kwargs={"pk": 1000}), data={"name": "name"})
+        assert response.status_code == 404
+
+    def test_not_found_with_invalid_data(self, api_client: APIClient, artists: [Artist]):
+        response = api_client.put(self.url(kwargs={"pk": 1000}), data={"name": "a" * 256})
+        assert response.status_code == 404
