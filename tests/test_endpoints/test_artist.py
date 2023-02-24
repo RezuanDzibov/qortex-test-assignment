@@ -98,3 +98,9 @@ class TestDeleteArtist:
         response = api_client.delete(self.url(kwargs={"pk": artist.id}))
         assert response.status_code == 204
         assert api_client.get(self.url(kwargs={"pk": artist.id})).status_code == 404
+
+    def test_multiple_exist_successful(self, api_client: APIClient, artists: [Artist]):
+        artist = artists[0]
+        response = api_client.delete(self.url(kwargs={"pk": artist.id}))
+        assert response.status_code == 204
+        assert api_client.get(self.url(kwargs={"pk": artist.id})).status_code == 404
