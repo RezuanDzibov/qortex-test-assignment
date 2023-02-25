@@ -86,7 +86,7 @@ class TestUpdateArtist:
         response = api_client.put(self.url(kwargs={"pk": 1000}), data={"name": "name"})
         assert response.status_code == 404
 
-    def test_not_found_with_invalid_data(self, api_client: APIClient, artists: [Artist]):
+    def test_not_exists_with_invalid_data(self, api_client: APIClient, artists: [Artist]):
         response = api_client.put(self.url(kwargs={"pk": 1000}), data={"name": "a" * 256})
         assert response.status_code == 404
 
