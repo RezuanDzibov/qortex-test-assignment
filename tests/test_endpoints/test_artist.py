@@ -33,7 +33,7 @@ class TestRetrieveArtist:
         assert response.status_code
         assert response.data == ArtistSerializer(artists[1]).data
 
-    def test_not_found(self, db, api_client: APIClient):
+    def test_none_exist(self, db, api_client: APIClient):
         response = api_client.get(self.url(kwargs={"pk": 1000}))
         assert response.status_code == 404
 
