@@ -15,7 +15,7 @@ class TestCreateArtist:
         assert response.status_code == 201
         assert response.data["name"] == built_artist.name
 
-    def test_invalid_data(self, db, api_client: APIClient):
+    def test_with_invalid_data(self, db, api_client: APIClient):
         response = api_client.post(self.url, data={"name": "a" * 256})
         assert response.status_code == 400
 
@@ -33,7 +33,7 @@ class TestRetrieveArtist:
         assert response.status_code
         assert response.data == ArtistSerializer(artists[1]).data
 
-    def test_not_found(self, db, api_client: APIClient):
+    def test_none_exist(self, db, api_client: APIClient):
         response = api_client.get(self.url(kwargs={"pk": 1000}))
         assert response.status_code == 404
 
@@ -50,7 +50,7 @@ class TestListArtist:
         assert response.status_code == 200
         assert response.data == ArtistSerializer(many=True, instance=artists).data
 
-    def test_not_exists(self, db, api_client: APIClient):
+    def test_none_exist(self, db, api_client: APIClient):
         response = api_client.get(self.url)
         assert response.status_code == 200
         assert not response.data
@@ -78,15 +78,15 @@ class TestUpdateArtist:
         response = api_client.put(self.url(kwargs={"pk": artist.id}), data={"name": "s" * 256})
         assert response.status_code == 400
 
-    def test_not_found(self, db, api_client: APIClient):
+    def test_none_exist(self, db, api_client: APIClient):
         response = api_client.put(self.url(kwargs={"pk": 1}), data={"name": "name"})
         assert response.status_code == 404
 
-    def test_not_found_exist(self, api_client: APIClient, artists: [Artist]):
+    def test_not_exists(self, api_client: APIClient, artists: [Artist]):
         response = api_client.put(self.url(kwargs={"pk": 1000}), data={"name": "name"})
         assert response.status_code == 404
 
-    def test_not_found_with_invalid_data(self, api_client: APIClient, artists: [Artist]):
+    def test_not_exists_with_invalid_data(self, api_client: APIClient, artists: [Artist]):
         response = api_client.put(self.url(kwargs={"pk": 1000}), data={"name": "a" * 256})
         assert response.status_code == 404
 
