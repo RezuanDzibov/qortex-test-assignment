@@ -50,7 +50,7 @@ class TestListArtist:
         assert response.status_code == 200
         assert response.data == ArtistSerializer(many=True, instance=artists).data
 
-    def test_not_exists(self, db, api_client: APIClient):
+    def test_none_exist(self, db, api_client: APIClient):
         response = api_client.get(self.url)
         assert response.status_code == 200
         assert not response.data
