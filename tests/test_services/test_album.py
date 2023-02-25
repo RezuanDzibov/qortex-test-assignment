@@ -30,3 +30,8 @@ class TestAddSongToAlbum:
     def test_successful(self, album: Album, song: Song):
         album = services.add_song_to_album(data={"album": album.id, "song": song.id})
         assert album.songs.filter(pk=song.id)
+
+    def test_none_exist_album(self, song: Song):
+        with pytest.raises(Http404) as exc:
+            services.add_song_to_album(data={"album": 1, "song": song.id})
+        assert isinstance(exc.value, Http404)
