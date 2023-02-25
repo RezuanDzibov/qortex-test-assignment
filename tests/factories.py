@@ -19,3 +19,9 @@ class AlbumFactory(factory.django.DjangoModelFactory):
 
     release_year = factory.LazyAttribute(lambda obj: fake.year())
 
+
+class SongFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = models.Song
+
+    title = factory.LazyAttribute(lambda obj: fake.title())
