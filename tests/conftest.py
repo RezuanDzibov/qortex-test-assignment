@@ -54,3 +54,13 @@ def albums(request, artist: models.Artist) -> [models.Album]:
 def song(db) -> models.Song:
     song = factories.SongFactory.create()
     return song
+
+
+@pytest.fixture(scope="function")
+def songs(request) -> [models.Song]:
+    func = partial(factories.SongFactory.create_batch)
+    if hasattr(request, "param") and request.param is int and request.param > 0:
+        songs = func(request.param)
+    else:
+        songs = func(randint(1, 6))
+    return songs
