@@ -15,7 +15,7 @@ class TestCreateArtist:
         assert response.status_code == 201
         assert response.data["name"] == built_artist.name
 
-    def test_invalid_data(self, db, api_client: APIClient):
+    def test_with_invalid_data(self, db, api_client: APIClient):
         response = api_client.post(self.url, data={"name": "a" * 256})
         assert response.status_code == 400
 
