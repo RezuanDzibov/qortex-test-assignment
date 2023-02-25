@@ -2,7 +2,7 @@ import pytest
 from django.http import Http404
 
 from songs import services
-from songs.models import Album
+from songs.models import Album, Song
 
 
 class TestGetAlbum:
@@ -27,4 +27,6 @@ class TestGetAlbum:
 
 
 class TestAddSongToAlbum:
-    pass
+    def test_successful(self, album: Album, song: Song):
+        album = services.add_song_to_album(data={"album": album.id, "song": song.id})
+        assert album.songs.filter(pk=song.id)
