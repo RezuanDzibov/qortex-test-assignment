@@ -78,7 +78,7 @@ class TestUpdateArtist:
         response = api_client.put(self.url(kwargs={"pk": artist.id}), data={"name": "s" * 256})
         assert response.status_code == 400
 
-    def test_not_found(self, db, api_client: APIClient):
+    def test_none_exist(self, db, api_client: APIClient):
         response = api_client.put(self.url(kwargs={"pk": 1}), data={"name": "name"})
         assert response.status_code == 404
 
