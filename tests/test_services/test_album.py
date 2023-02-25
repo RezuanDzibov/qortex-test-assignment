@@ -19,3 +19,8 @@ class TestGetAlbum:
         with pytest.raises(Http404) as exc:
             services.get_album(id_=1000)
         assert isinstance(exc.value, Http404)
+
+    def test_none_exist(self, db):
+        with pytest.raises(Http404) as exc:
+            services.get_album(id_=1)
+        assert isinstance(exc.value, Http404)
