@@ -48,3 +48,9 @@ def albums(request, artist: models.Artist) -> [models.Album]:
     else:
         albums = func(randint(1, 6))
     return albums
+
+
+@pytest.fixture(scope="function")
+def song(db) -> models.Song:
+    song = factories.SongFactory.create()
+    return song
