@@ -11,3 +11,10 @@ class ArtistFactory(factory.django.DjangoModelFactory):
         model = models.Artist
 
     name = factory.LazyAttribute(lambda obj: fake.name())
+
+
+class AlbumFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = models.Album
+
+    name = factory.lazy_attribute(lambda obj: fake.color_name())
