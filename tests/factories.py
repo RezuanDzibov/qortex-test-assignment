@@ -17,4 +17,5 @@ class AlbumFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Album
 
-    name = factory.lazy_attribute(lambda obj: fake.color_name())
+    release_year = factory.LazyAttribute(lambda obj: fake.year())
+

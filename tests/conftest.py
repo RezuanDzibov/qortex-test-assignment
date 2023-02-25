@@ -38,3 +38,13 @@ def artists(request, db) -> [models.Artist]:
 def album(artist: models.Artist) -> models.Album:
     album = factories.AlbumFactory(artist=artist)
     return album
+
+
+@pytest.fixture(scope="function")
+def albums(request, artist: models.Artist) -> [models.Album]:
+    func = partial(factories.AlbumFactory.create_batch, artist=artist)
+    if hasattr(request, "param") and request.param is int and request.param > 0:
+        albums = func(request.param)
+    else:
+        albums = func(randint(1, 6))
+    return albums
