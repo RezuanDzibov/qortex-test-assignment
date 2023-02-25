@@ -82,7 +82,7 @@ class TestUpdateArtist:
         response = api_client.put(self.url(kwargs={"pk": 1}), data={"name": "name"})
         assert response.status_code == 404
 
-    def test_not_exist(self, api_client: APIClient, artists: [Artist]):
+    def test_not_exists(self, api_client: APIClient, artists: [Artist]):
         response = api_client.put(self.url(kwargs={"pk": 1000}), data={"name": "name"})
         assert response.status_code == 404
 
