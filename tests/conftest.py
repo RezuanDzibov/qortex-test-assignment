@@ -32,3 +32,9 @@ def artists(request, db) -> [models.Artist]:
     else:
         artists = func(randint(1, 6))
     return artists
+
+
+@pytest.fixture(scope="function")
+def album(artist: models.Artist) -> models.Album:
+    album = factories.AlbumFactory(artist=artist)
+    return album
