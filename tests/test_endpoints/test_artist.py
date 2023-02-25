@@ -104,3 +104,7 @@ class TestDeleteArtist:
         response = api_client.delete(self.url(kwargs={"pk": artist.id}))
         assert response.status_code == 204
         assert api_client.get(self.url(kwargs={"pk": artist.id})).status_code == 404
+
+    def test_not_found(self, db, api_client: APIClient):
+        response = api_client.delete(self.url(kwargs={"pk": 1}))
+        assert response.status_code == 404
