@@ -89,3 +89,26 @@ class TestUpdateArtist:
     def test_not_found_with_invalid_data(self, api_client: APIClient, artists: [Artist]):
         response = api_client.put(self.url(kwargs={"pk": 1000}), data={"name": "a" * 256})
         assert response.status_code == 404
+
+
+class TestDeleteArtist:
+    url = partial(reverse, "artists-detail")
+
+    def test_successful(self, api_client: APIClient, artist: Artist):
+        response = api_client.delete(self.url(kwargs={"pk": artist.id}))
+        assert response.status_code == 204
+        assert api_client.get(self.url(kwargs={"pk": artist.id})).status_code == 404
+
+    def test_multiple_exist_successful(self, api_client: APIClient, artists: [Artist]):
+        artist = artists[0]
+        response = api_client.delete(self.url(kwargs={"pk": artist.id}))
+        assert response.status_code == 204
+        assert api_client.get(self.url(kwargs={"pk": artist.id})).status_code == 404
+
+    def test_none_exist(self, db, api_client: APIClient):
+        response = api_client.delete(self.url(kwargs={"pk": 1}))
+        assert response.status_code == 404
+
+    def test_not_exists(self, api_client: APIClient, artists: [Artist]):
+        response = api_client.delete(self.url(kwargs={"pk": 1000}))
+        assert response.status_code == 404
