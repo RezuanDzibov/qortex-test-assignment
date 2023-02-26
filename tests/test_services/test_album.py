@@ -50,3 +50,8 @@ class TestAddSongToAlbum:
         with pytest.raises(Http404) as exc:
             services.add_song_to_album(data={"album": album.id, "song": 1000})
         assert isinstance(exc.value, Http404)
+
+    def test_add_to_albums(self, albums: [Album], song: Song):
+        for album in albums:
+            services.add_song_to_album(data={"album": album.id, "song": song.id})
+        assert [album.id for album in albums] == [album_song.album.id for album_song in song.album_songs.all()]
