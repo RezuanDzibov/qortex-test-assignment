@@ -55,3 +55,8 @@ class TestAddSongToAlbum:
         for album in albums:
             services.add_song_to_album(data={"album": album.id, "song": song.id})
         assert [album.id for album in albums] == [album_song.album.id for album_song in song.album_songs.all()]
+
+    def test_add_multiple_songs_to_album(self, album: Album, songs: [Song]):
+        for song in songs:
+            services.add_song_to_album(data={"album": album.id, "song": song.id})
+        assert [album_song.song.id for album_song in album.songs.all()] == [song.id for song in songs]
