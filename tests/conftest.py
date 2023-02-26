@@ -30,7 +30,7 @@ def artists(request, db) -> [models.Artist]:
     if hasattr(request, "param") and request.param is int and request.param > 0:
         artists = func(request.param)
     else:
-        artists = func(randint(1, 6))
+        artists = func(randint(2, 6))
     return artists
 
 
