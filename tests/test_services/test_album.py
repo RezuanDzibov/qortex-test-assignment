@@ -60,3 +60,11 @@ class TestAddSongToAlbum:
         for song in songs:
             services.add_song_to_album(data={"album": album.id, "song": song.id})
         assert [album_song.song.id for album_song in album.songs.all()] == [song.id for song in songs]
+
+    @pytest.mark.parametrize("albums", [2], indirect=True)
+    @pytest.mark.parametrize("songs", [2], indirect=True)
+    def test_add_songs_to_albums(self, albums: [Album], songs: [Song]):
+        for album, song in zip(albums, songs):
+            services.add_song_to_album(data={"album": album.id, "song": song.id})
+        assert songs[0].album_songs.filter(album=albums[0])
+        assert songs[1].album_songs.filter(album=albums[1])
