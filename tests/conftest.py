@@ -62,5 +62,5 @@ def songs(request) -> [models.Song]:
     if hasattr(request, "param") and isinstance(request.param, int) and request.param > 0:
         songs = func(request.param)
     else:
-        songs = func(randint(1, 6))
+        songs = func(randint(2, 6))
     return songs
