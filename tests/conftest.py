@@ -46,7 +46,7 @@ def albums(request, artist: models.Artist) -> [models.Album]:
     if hasattr(request, "param") and isinstance(request.param, int) and request.param:
         albums = func(request.param)
     else:
-        albums = func(randint(1, 6))
+        albums = func(randint(2, 6))
     return albums
 
 
