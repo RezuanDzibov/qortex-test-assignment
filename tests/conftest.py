@@ -64,3 +64,13 @@ def songs(request) -> [models.Song]:
     else:
         songs = func(randint(2, 6))
     return songs
+
+
+@pytest.fixture(scope="function")
+def album_with_song(album: models.Album, song: models.Song) -> [models.Album, models.Song]:
+    models.AlbumSong.objects.create(
+        song=song,
+        album=album
+    )
+    album.refresh_from_db()
+    return album, song
