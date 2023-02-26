@@ -1,5 +1,6 @@
 import pytest
 from django.http import Http404
+from rest_framework.exceptions import NotFound
 
 from songs import services
 from songs.models import Album, Song
@@ -79,3 +80,8 @@ class TestRemoveSongFromAlbum:
         with pytest.raises(Http404) as exc:
             services.remove_song_from_album(data={"album": 1, song: song.id})
         assert isinstance(exc.value, Http404)
+
+    def test_not_exists_song(self, album: Album):
+        with pytest.raises(NotFound) as exc:
+            services.remove_song_from_album(data={"album": album.id, "song": 1})
+        assert exc.value.status_code == 404
