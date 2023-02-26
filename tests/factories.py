@@ -24,4 +24,4 @@ class SongFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Song
 
-    title = factory.LazyAttribute(lambda obj: fake.title())
+    title = factory.LazyAttribute(lambda obj: fake.color_name())

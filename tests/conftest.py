@@ -43,7 +43,7 @@ def album(artist: models.Artist) -> models.Album:
 @pytest.fixture(scope="function")
 def albums(request, artist: models.Artist) -> [models.Album]:
     func = partial(factories.AlbumFactory.create_batch, artist=artist)
-    if hasattr(request, "param") and request.param is int and request.param > 0:
+    if hasattr(request, "param") and isinstance(request.param, int) and request.param:
         albums = func(request.param)
     else:
         albums = func(randint(1, 6))
@@ -59,7 +59,7 @@ def song(db) -> models.Song:
 @pytest.fixture(scope="function")
 def songs(request) -> [models.Song]:
     func = partial(factories.SongFactory.create_batch)
-    if hasattr(request, "param") and request.param is int and request.param > 0:
+    if hasattr(request, "param") and isinstance(request.param, int) and request.param > 0:
         songs = func(request.param)
     else:
         songs = func(randint(1, 6))
