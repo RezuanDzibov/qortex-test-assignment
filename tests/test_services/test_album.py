@@ -68,3 +68,7 @@ class TestAddSongToAlbum:
             services.add_song_to_album(data={"album": album.id, "song": song.id})
         assert songs[0].album_songs.filter(album=albums[0])
         assert songs[1].album_songs.filter(album=albums[1])
+
+
+class TestRemoveSongFromAlbum:
+    pass
