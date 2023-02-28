@@ -85,3 +85,8 @@ class TestRemoveSongFromAlbum:
         with pytest.raises(NotFound) as exc:
             services.remove_song_from_album(data={"album": album.id, "song": 1})
         assert exc.value.status_code == 404
+
+    def test_album_with_many_songs(self, album_with_songs: dict):
+        song = album_with_songs["songs"][0]
+        album = services.remove_song_from_album(data={"album": album_with_songs["album"].id, "song": song.id})
+        assert not album.songs.filter(song__pk=song.id)
