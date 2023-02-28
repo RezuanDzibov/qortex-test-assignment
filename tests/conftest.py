@@ -1,8 +1,8 @@
 from functools import partial
 from random import randint
-from typing import List
 
 import pytest
+from django.db import transaction
 from rest_framework.test import APIClient
 
 from . import factories
@@ -72,5 +72,13 @@ def album_with_song(album: models.Album, song: models.Song) -> [models.Album, mo
         song=song,
         album=album
     )
-    album.refresh_from_db()
     return album, song
+
+
+@pytest.fixture(scope="function")
+def album_with_songs(album: models.Album, songs: [models.Song]) -> dict:
+    album_songs = [models.AlbumSong(album=album, song=song) for song in songs]
+    with transaction.atomic():
+        for album_song in album_songs:
+            album_song.save()
+    return {"album": album, "songs": songs}
