@@ -10,3 +10,7 @@ class TestGetSong:
         song_in_db = get_song(id_=song.id)
         assert song == song_in_db
 
+    def test_successful_multiple_exist(self, songs: [Song]):
+        song = songs[0]
+        song_in_db = get_song(id_=song.id)
+        assert song == song_in_db
