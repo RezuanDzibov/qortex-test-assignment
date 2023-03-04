@@ -31,7 +31,7 @@ def add_song_to_album(data: dict) -> models.Album:
 
 def remove_song_from_album(data: dict) -> models.Album:
     album = get_album(id_=data["album"])
-    song = album.songs.filter(pk=data["song"])
+    song = album.songs.filter(song__pk=data["song"])
     if not song:
         raise NotFound()
     song.delete()

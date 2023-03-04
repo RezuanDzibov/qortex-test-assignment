@@ -1,8 +1,8 @@
 from functools import partial
 from random import randint
-from typing import List
 
 import pytest
+from django.db import transaction
 from rest_framework.test import APIClient
 
 from . import factories
@@ -64,3 +64,34 @@ def songs(request) -> [models.Song]:
     else:
         songs = func(randint(2, 6))
     return songs
+
+
+@pytest.fixture(scope="function")
+def album_with_song(album: models.Album, song: models.Song) -> [models.Album, models.Song]:
+    models.AlbumSong.objects.create(
+        song=song,
+        album=album
+    )
+    return album, song
+
+
+@pytest.fixture(scope="function")
+def album_with_songs(album: models.Album, songs: [models.Song]) -> dict:
+    album_songs = [models.AlbumSong(album=album, song=song) for song in songs]
+    with transaction.atomic():
+        for album_song in album_songs:
+            album_song.save()
+    return {"album": album, "songs": songs}
+
+
+@pytest.fixture(scope="function")
+def albums_with_songs(artist: models.Artist) -> dict:
+    with transaction.atomic():
+        songs = factories.SongFactory.create_batch(6)
+        albums = factories.AlbumFactory.create_batch(artist=artist, size=2)
+    _songs = {0: songs[0:3], 1: songs[3:]}
+    for index, album in enumerate(albums):
+        with transaction.atomic():
+            for song in _songs[index]:
+                factories.AlbumSongFactory.create(album=album, song=song)
+    return {"albums": albums, "songs": songs}
