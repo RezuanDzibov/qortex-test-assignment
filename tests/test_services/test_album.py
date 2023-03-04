@@ -90,3 +90,9 @@ class TestRemoveSongFromAlbum:
         song = album_with_songs["songs"][0]
         album = services.remove_song_from_album(data={"album": album_with_songs["album"].id, "song": song.id})
         assert not album.songs.filter(song__pk=song.id)
+
+    def test_albums_with_many_songs(self, albums_with_songs: dict):
+        album = albums_with_songs["albums"][0]
+        song = albums_with_songs["songs"][1]
+        album = services.remove_song_from_album(data={"album": album.id, "song": song.id})
+        assert not album.songs.filter(song__pk=song.id)
