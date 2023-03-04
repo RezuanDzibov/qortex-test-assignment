@@ -6,4 +6,7 @@ from songs.models import Song
 
 
 class TestGetSong:
-    pass
+    def test_successful(self, song: Song):
+        song_in_db = get_song(id_=song.id)
+        assert song == song_in_db
+
