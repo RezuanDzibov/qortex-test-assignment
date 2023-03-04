@@ -57,7 +57,7 @@ def song(db) -> models.Song:
 
 
 @pytest.fixture(scope="function")
-def songs(request) -> [models.Song]:
+def songs(request, db) -> [models.Song]:
     func = partial(factories.SongFactory.create_batch)
     if hasattr(request, "param") and isinstance(request.param, int) and request.param > 0:
         songs = func(request.param)
