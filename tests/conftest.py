@@ -82,3 +82,16 @@ def album_with_songs(album: models.Album, songs: [models.Song]) -> dict:
         for album_song in album_songs:
             album_song.save()
     return {"album": album, "songs": songs}
+
+
+@pytest.fixture(scope="function")
+def albums_with_songs(artist: models.Artist) -> dict:
+    with transaction.atomic():
+        songs = factories.SongFactory.create_batch(6)
+        albums = factories.AlbumFactory.create_batch(artist=artist, size=2)
+    _songs = {0: songs[0:3], 1: songs[3:]}
+    for index, album in enumerate(albums):
+        with transaction.atomic():
+            for song in _songs[index]:
+                factories.AlbumSongFactory.create(album=album, song=song)
+    return {"albums": albums, "songs": songs}
