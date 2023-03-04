@@ -14,3 +14,8 @@ class TestGetSong:
         song = songs[0]
         song_in_db = get_song(id_=song.id)
         assert song == song_in_db
+
+    def test_not_exists(self, songs: [Song]):
+        with pytest.raises(Http404) as exc:
+            get_song(id_=1000)
+        assert isinstance(exc.value, Http404)
