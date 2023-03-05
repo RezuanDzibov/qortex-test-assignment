@@ -95,3 +95,8 @@ def albums_with_songs(artist: models.Artist) -> dict:
             for song in _songs[index]:
                 factories.AlbumSongFactory.create(album=album, song=song)
     return {"albums": albums, "songs": songs}
+
+
+@pytest.fixture(scope="function")
+def built_album(artist) -> models.Album:
+    return factories.AlbumFactory.build(artist=artist)
