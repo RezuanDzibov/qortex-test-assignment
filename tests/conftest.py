@@ -100,3 +100,8 @@ def albums_with_songs(artist: models.Artist) -> dict:
 @pytest.fixture(scope="function")
 def built_album(artist) -> models.Album:
     return factories.AlbumFactory.build(artist=artist)
+
+
+@pytest.fixture(scope="function")
+def built_album_without_artist(db) -> models.Album:
+    return factories.AlbumFactory.build()
