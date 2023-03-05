@@ -41,3 +41,13 @@ class TestCreateAlbum:
             }
         )
         assert response.status_code == 400
+
+    def test_none_artist_exist(self, api_client: APIClient, built_album_without_artist: Album):
+        response = api_client.post(
+            self.url,
+            data={
+                "release_year": built_album_without_artist.release_year,
+                "artist": 1
+            }
+        )
+        assert response.status_code == 400
