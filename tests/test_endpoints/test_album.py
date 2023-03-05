@@ -1,7 +1,10 @@
+from functools import partial
+
 from django.urls import reverse
 from rest_framework.test import APIClient
 
 from songs.models import Album, Artist
+from songs.serializers import AlbumRetrieveSerializer
 
 
 class TestCreateAlbum:
@@ -73,3 +76,13 @@ class TestCreateAlbum:
             }
         )
         assert response.status_code == 400
+
+
+class TestRetrieveAlbum:
+    url = partial(reverse, "albums-detail")
+
+    def test_successful(self, api_client: APIClient, album: Album):
+        response = api_client.get(self.url(kwargs={"pk": album.id}))
+        assert response.status_code == 200
+        assert response.data == AlbumRetrieveSerializer(album).data
+
