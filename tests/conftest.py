@@ -95,3 +95,23 @@ def albums_with_songs(artist: models.Artist) -> dict:
             for song in _songs[index]:
                 factories.AlbumSongFactory.create(album=album, song=song)
     return {"albums": albums, "songs": songs}
+
+
+@pytest.fixture(scope="function")
+def built_album(artist) -> models.Album:
+    return factories.AlbumFactory.build(artist=artist)
+
+
+@pytest.fixture(scope="function")
+def built_album_without_artist(db) -> models.Album:
+    return factories.AlbumFactory.build()
+
+
+@pytest.fixture(scope="function")
+def artists(request, db):
+    func = partial(factories.ArtistFactory.create_batch)
+    if hasattr(request, "param") and isinstance(request.param, int) and request.param > 0:
+        artists = func(request.param)
+    else:
+        artists = func(randint(2, 6))
+    return artists
