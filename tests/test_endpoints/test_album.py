@@ -51,3 +51,14 @@ class TestCreateAlbum:
             }
         )
         assert response.status_code == 400
+
+    def test_with_invalid_field(self, api_client: APIClient, built_album: Album):
+        response = api_client.post(
+            self.url,
+            data={
+                "release_year": built_album.release_year,
+                "artist": built_album.artist,
+                "field": "stub"
+            }
+        )
+        assert response.status_code == 400
