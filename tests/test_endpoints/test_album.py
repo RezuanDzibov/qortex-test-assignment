@@ -1,7 +1,10 @@
+from functools import partial
+
 from django.urls import reverse
 from rest_framework.test import APIClient
 
 from songs.models import Album, Artist
+from songs.serializers import AlbumRetrieveSerializer
 
 
 class TestCreateAlbum:
@@ -73,3 +76,25 @@ class TestCreateAlbum:
             }
         )
         assert response.status_code == 400
+
+
+class TestRetrieveAlbum:
+    url = partial(reverse, "albums-detail")
+
+    def test_successful(self, api_client: APIClient, album: Album):
+        response = api_client.get(self.url(kwargs={"pk": album.id}))
+        assert response.status_code == 200
+        assert response.data == AlbumRetrieveSerializer(album).data
+
+    def test_multiple_albums_exist(self, api_client: APIClient, albums: [Album]):
+        response = api_client.get(self.url(kwargs={"pk": albums[1].id}))
+        assert response.status_code
+        assert response.data == AlbumRetrieveSerializer(albums[1]).data
+
+    def test_none_exist(self, db, api_client: APIClient):
+        response = api_client.get(self.url(kwargs={"pk": 1}))
+        assert response.status_code == 404
+
+    def test_not_exists_album(self, api_client: APIClient, albums: [Album]):
+        response = api_client.get(self.url(kwargs={"pk": 1000}))
+        assert response.status_code == 404
