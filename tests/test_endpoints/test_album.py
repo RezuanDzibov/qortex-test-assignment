@@ -3,7 +3,7 @@ from functools import partial
 from django.urls import reverse
 from rest_framework.test import APIClient
 
-from songs.models import Album, Artist
+from songs.models import Album, Artist, Song
 from songs.serializers import AlbumRetrieveSerializer, AlbumSerializer
 
 
@@ -117,3 +117,8 @@ class TestListAlbum:
         response = api_client.get(self.url)
         assert response.status_code == 200
         assert dict(response.data[0]) == AlbumSerializer(instance=album).data
+
+    def test_with_songs(self, api_client: APIClient, albums_with_songs: dict):
+        response = api_client.get(self.url)
+        assert response.status_code == 200
+        assert response.data == AlbumSerializer(many=True, instance=albums_with_songs["albums"]).data
