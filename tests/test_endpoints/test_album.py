@@ -150,3 +150,8 @@ class TestUpdateAlbum:
     def test_with_invalid_data(self, api_client: APIClient, album: Album):
         response = api_client.patch(self.url(kwargs={"pk": album.id}), data={"release_year": self.not_year})
         assert response.status_code == 400
+
+    def test_none_exist(self, db, api_client: APIClient):
+        response = api_client.patch(self.url(kwargs={"pk": 1}), data={"release_year": self.release_year})
+        assert response.status_code == 404
+
