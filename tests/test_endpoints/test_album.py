@@ -130,4 +130,13 @@ class TestListAlbum:
 
 
 class TestUpdateAlbum:
-    pass
+    url = partial(reverse, "albums-detail")
+    release_year = 2019
+    not_year = "not valid year"
+
+    def test_successful(self, api_client: APIClient, album: Album):
+        album.release_year = self.release_year
+        response = api_client.patch(self.url(kwargs={"pk": album.id}), data={"release_year": self.release_year})
+        assert response.status_code == 200
+        assert response.data == AlbumSerializer(instance=album).data
+
