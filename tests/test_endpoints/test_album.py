@@ -112,3 +112,8 @@ class TestListAlbum:
         response = api_client.get(self.url)
         assert response.status_code == 200
         assert not response.data
+
+    def test_one_exists(self, api_client: APIClient, album: Album):
+        response = api_client.get(self.url)
+        assert response.status_code == 200
+        assert dict(response.data[0]) == AlbumSerializer(instance=album).data
