@@ -122,3 +122,8 @@ class TestListAlbum:
         response = api_client.get(self.url)
         assert response.status_code == 200
         assert response.data == AlbumSerializer(many=True, instance=albums_with_songs["albums"]).data
+
+    def test_one_with_songs(self, api_client: APIClient, album_with_songs: dict):
+        response = api_client.get(self.url)
+        assert response.status_code == 200
+        assert dict(response.data[0]) == AlbumSerializer(instance=album_with_songs["album"]).data
