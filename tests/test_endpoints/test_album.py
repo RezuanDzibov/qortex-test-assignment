@@ -127,3 +127,7 @@ class TestListAlbum:
         response = api_client.get(self.url)
         assert response.status_code == 200
         assert dict(response.data[0]) == AlbumSerializer(instance=album_with_songs["album"]).data
+
+
+class TestUpdateAlbum:
+    pass
