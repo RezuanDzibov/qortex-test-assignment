@@ -4,7 +4,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from songs.models import Album, Artist
-from songs.serializers import AlbumRetrieveSerializer
+from songs.serializers import AlbumRetrieveSerializer, AlbumSerializer
 
 
 class TestCreateAlbum:
@@ -98,3 +98,7 @@ class TestRetrieveAlbum:
     def test_not_exists_album(self, api_client: APIClient, albums: [Album]):
         response = api_client.get(self.url(kwargs={"pk": 1000}))
         assert response.status_code == 404
+
+
+class TestListAlbum:
+    pass
