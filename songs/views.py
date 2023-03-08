@@ -15,6 +15,7 @@ class ArtistViewSet(ModelViewSet):
 class AlbumViewSet(ModelViewSet):
     queryset = models.Album.objects.all()
     serializer_class = serializers.AlbumSerializer
+    http_method_names = ["get", "patch", "delete", "post"]
 
     @swagger_auto_schema(responses={200: serializers.AlbumRetrieveSerializer()})
     def retrieve(self, request, *args, **kwargs):
