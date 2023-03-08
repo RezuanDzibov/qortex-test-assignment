@@ -140,3 +140,9 @@ class TestUpdateAlbum:
         assert response.status_code == 200
         assert response.data == AlbumSerializer(instance=album).data
 
+    def test_multiple_exist_successful(self, api_client: APIClient, albums: [Album]):
+        album = albums[0]
+        album.release_year = self.release_year
+        response = api_client.patch(self.url(kwargs={"pk": album.id}), data={"release_year": self.release_year})
+        assert response.status_code == 200
+        assert response.data == AlbumSerializer(instance=album).data
