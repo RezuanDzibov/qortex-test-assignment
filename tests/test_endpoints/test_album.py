@@ -101,4 +101,9 @@ class TestRetrieveAlbum:
 
 
 class TestListAlbum:
-    pass
+    url = reverse("albums-list")
+
+    def test_successful(self, api_client: APIClient, albums: [Album]):
+        response = api_client.get(self.url)
+        assert response.status_code == 200
+        assert response.data == AlbumSerializer(many=True, instance=albums).data
