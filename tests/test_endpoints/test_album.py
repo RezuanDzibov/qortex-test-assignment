@@ -3,8 +3,8 @@ from functools import partial
 from django.urls import reverse
 from rest_framework.test import APIClient
 
-from songs.models import Album, Artist
-from songs.serializers import AlbumRetrieveSerializer
+from songs.models import Album, Artist, Song
+from songs.serializers import AlbumRetrieveSerializer, AlbumSerializer
 
 
 class TestCreateAlbum:
@@ -98,3 +98,32 @@ class TestRetrieveAlbum:
     def test_not_exists_album(self, api_client: APIClient, albums: [Album]):
         response = api_client.get(self.url(kwargs={"pk": 1000}))
         assert response.status_code == 404
+
+
+class TestListAlbum:
+    url = reverse("albums-list")
+
+    def test_successful(self, api_client: APIClient, albums: [Album]):
+        response = api_client.get(self.url)
+        assert response.status_code == 200
+        assert response.data == AlbumSerializer(many=True, instance=albums).data
+
+    def test_none_exist(self, db, api_client: APIClient):
+        response = api_client.get(self.url)
+        assert response.status_code == 200
+        assert not response.data
+
+    def test_one_exists(self, api_client: APIClient, album: Album):
+        response = api_client.get(self.url)
+        assert response.status_code == 200
+        assert dict(response.data[0]) == AlbumSerializer(instance=album).data
+
+    def test_with_songs(self, api_client: APIClient, albums_with_songs: dict):
+        response = api_client.get(self.url)
+        assert response.status_code == 200
+        assert response.data == AlbumSerializer(many=True, instance=albums_with_songs["albums"]).data
+
+    def test_one_with_songs(self, api_client: APIClient, album_with_songs: dict):
+        response = api_client.get(self.url)
+        assert response.status_code == 200
+        assert dict(response.data[0]) == AlbumSerializer(instance=album_with_songs["album"]).data
