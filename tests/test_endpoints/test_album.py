@@ -155,3 +155,7 @@ class TestUpdateAlbum:
         response = api_client.patch(self.url(kwargs={"pk": 1}), data={"release_year": self.release_year})
         assert response.status_code == 404
 
+    def test_not_exists(self, api_client: APIClient, albums: [Album]):
+        response = api_client.patch(self.url(kwargs={"pk": 1000}), data={"release_year": self.release_year})
+        assert response.status_code == 404
+
