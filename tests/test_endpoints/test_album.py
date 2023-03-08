@@ -146,3 +146,7 @@ class TestUpdateAlbum:
         response = api_client.patch(self.url(kwargs={"pk": album.id}), data={"release_year": self.release_year})
         assert response.status_code == 200
         assert response.data == AlbumSerializer(instance=album).data
+
+    def test_with_invalid_data(self, api_client: APIClient, album: Album):
+        response = api_client.patch(self.url(kwargs={"pk": album.id}), data={"release_year": self.not_year})
+        assert response.status_code == 400
