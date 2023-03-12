@@ -165,4 +165,11 @@ class TestUpdateAlbum:
 
 
 class TestDeleteAlbum:
-    pass
+    url = partial(reverse, "albums-detail")
+
+    def test_successful(self, api_client: APIClient, album: Album):
+        response = api_client.delete(self.url(kwargs={"pk": album.id}))
+        assert response.status_code == 204
+        assert api_client.get(self.url(kwargs={"pk": album.id})).status_code == 404
+
+
