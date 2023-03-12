@@ -162,3 +162,26 @@ class TestUpdateAlbum:
     def test_not_exists_with_invalid_data(self, api_client: APIClient, albums: [Album]):
         response = api_client.patch(self.url(kwargs={"pk": 1000}), data={"release_year": self.not_year})
         assert response.status_code == 404
+
+
+class TestDeleteAlbum:
+    url = partial(reverse, "albums-detail")
+
+    def test_successful(self, api_client: APIClient, album: Album):
+        response = api_client.delete(self.url(kwargs={"pk": album.id}))
+        assert response.status_code == 204
+        assert api_client.get(self.url(kwargs={"pk": album.id})).status_code == 404
+
+    def test_multiple_exist(self, api_client: APIClient, albums: [Album]):
+        album = albums[0]
+        response = api_client.delete(self.url(kwargs={"pk": album.id}))
+        assert response.status_code == 204
+        assert api_client.get(self.url(kwargs={"pk": album.id})).status_code == 404
+
+    def test_none_exist(self, db, api_client: APIClient):
+        response = api_client.delete(self.url(kwargs={"pk": 1}))
+        assert response.status_code == 404
+
+    def test_not_exists(self, api_client: APIClient, albums: [Album]):
+        response = api_client.delete(self.url(kwargs={"pk": 1000}))
+        assert response.status_code == 404
