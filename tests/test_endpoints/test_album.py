@@ -162,3 +162,7 @@ class TestUpdateAlbum:
     def test_not_exists_with_invalid_data(self, api_client: APIClient, albums: [Album]):
         response = api_client.patch(self.url(kwargs={"pk": 1000}), data={"release_year": self.not_year})
         assert response.status_code == 404
+
+
+class TestDeleteAlbum:
+    pass
