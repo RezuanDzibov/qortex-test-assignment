@@ -127,3 +127,38 @@ class TestListAlbum:
         response = api_client.get(self.url)
         assert response.status_code == 200
         assert dict(response.data[0]) == AlbumSerializer(instance=album_with_songs["album"]).data
+
+
+class TestUpdateAlbum:
+    url = partial(reverse, "albums-detail")
+    release_year = 2019
+    not_year = "not valid year"
+
+    def test_successful(self, api_client: APIClient, album: Album):
+        album.release_year = self.release_year
+        response = api_client.patch(self.url(kwargs={"pk": album.id}), data={"release_year": self.release_year})
+        assert response.status_code == 200
+        assert response.data == AlbumSerializer(instance=album).data
+
+    def test_multiple_exist_successful(self, api_client: APIClient, albums: [Album]):
+        album = albums[0]
+        album.release_year = self.release_year
+        response = api_client.patch(self.url(kwargs={"pk": album.id}), data={"release_year": self.release_year})
+        assert response.status_code == 200
+        assert response.data == AlbumSerializer(instance=album).data
+
+    def test_with_invalid_data(self, api_client: APIClient, album: Album):
+        response = api_client.patch(self.url(kwargs={"pk": album.id}), data={"release_year": self.not_year})
+        assert response.status_code == 400
+
+    def test_none_exist(self, db, api_client: APIClient):
+        response = api_client.patch(self.url(kwargs={"pk": 1}), data={"release_year": self.release_year})
+        assert response.status_code == 404
+
+    def test_not_exists(self, api_client: APIClient, albums: [Album]):
+        response = api_client.patch(self.url(kwargs={"pk": 1000}), data={"release_year": self.release_year})
+        assert response.status_code == 404
+
+    def test_not_exists_with_invalid_data(self, api_client: APIClient, albums: [Album]):
+        response = api_client.patch(self.url(kwargs={"pk": 1000}), data={"release_year": self.not_year})
+        assert response.status_code == 404
