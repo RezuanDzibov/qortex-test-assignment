@@ -210,3 +210,7 @@ class TestAddSongToAlbum:
                 response = api_client.post(self.url(kwargs={"pk": album.id}), data={"song": song.id})
                 assert response.status_code == 200
                 assert response.data == AlbumRetrieveSerializer(album).data
+
+    def test_none_song_exist(self, api_client: APIClient, album: Album):
+        response = api_client.post(self.url(kwargs={"pk": album.id}), data={"song": 1000})
+        assert response.status_code == 404
