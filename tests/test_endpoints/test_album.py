@@ -214,3 +214,7 @@ class TestAddSongToAlbum:
     def test_none_song_exist(self, api_client: APIClient, album: Album):
         response = api_client.post(self.url(kwargs={"pk": album.id}), data={"song": 1000})
         assert response.status_code == 404
+
+    def test_not_exists_song(self, api_client: APIClient, album: Album, songs: [Song]):
+        response = api_client.post(self.url(kwargs={"pk": album.id}), data={"song": 1000})
+        assert response.status_code == 404
