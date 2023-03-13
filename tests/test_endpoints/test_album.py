@@ -188,4 +188,9 @@ class TestDeleteAlbum:
 
 
 class TestAddSongToAlbum:
-    pass
+    url = partial(reverse, "add_song_to_album")
+
+    def test_add_song(self, api_client: APIClient, album: Album, song: Song):
+        response = api_client.post(self.url(kwargs={"pk": album.id}), data={"song": song.id})
+        assert response.status_code == 200
+        assert response.data == AlbumRetrieveSerializer(album).data
