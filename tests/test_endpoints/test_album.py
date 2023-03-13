@@ -1,5 +1,6 @@
 from functools import partial
 
+import pytest
 from django.urls import reverse
 from rest_framework.test import APIClient
 
@@ -200,3 +201,12 @@ class TestAddSongToAlbum:
             response = api_client.post(self.url(kwargs={"pk": album.id}), data={"song": song.id})
             assert response.status_code == 200
             assert response.data == AlbumRetrieveSerializer(album).data
+
+    @pytest.mark.parametrize("albums", [2], indirect=True)
+    @pytest.mark.parametrize("songs", [2], indirect=True)
+    def test_add_songs_to_albums(self, api_client: APIClient, albums: [Album], songs: [Song]):
+        for album in albums:
+            for song in songs:
+                response = api_client.post(self.url(kwargs={"pk": album.id}), data={"song": song.id})
+                assert response.status_code == 200
+                assert response.data == AlbumRetrieveSerializer(album).data
