@@ -194,3 +194,9 @@ class TestAddSongToAlbum:
         response = api_client.post(self.url(kwargs={"pk": album.id}), data={"song": song.id})
         assert response.status_code == 200
         assert response.data == AlbumRetrieveSerializer(album).data
+
+    def test_add_songs_to_album(self, api_client: APIClient, album: Album, songs: [Song]):
+        for song in songs:
+            response = api_client.post(self.url(kwargs={"pk": album.id}), data={"song": song.id})
+            assert response.status_code == 200
+            assert response.data == AlbumRetrieveSerializer(album).data
