@@ -237,4 +237,11 @@ class TestAddSongToAlbum:
 
 
 class TestRemoveSongFromAlbum:
-    pass
+    url = partial(reverse, "remove_song_from_album")
+
+    def test_remove_song(self, api_client: APIClient, album_with_song: list):
+        response = api_client.delete(
+            self.url(kwargs={"pk": album_with_song[0].id}), data={"song": album_with_song[1].id}
+        )
+        assert response.status_code == 204
+        assert not Album.objects.get(pk=album_with_song[0].id).songs.filter(song__pk=album_with_song[1].id)
