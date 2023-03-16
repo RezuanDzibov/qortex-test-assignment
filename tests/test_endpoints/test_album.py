@@ -234,3 +234,7 @@ class TestAddSongToAlbum:
     def test_with_invalid_data(self, api_client: APIClient, album: Album):
         response = api_client.post(self.url(kwargs={"pk": album.id}), data={"song": "invalid song"})
         assert response.status_code == 400
+
+
+class TestRemoveSongFromAlbum:
+    pass
