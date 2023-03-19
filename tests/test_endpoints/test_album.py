@@ -254,3 +254,12 @@ class TestRemoveSongFromAlbum:
             )
             assert response.status_code == 204
         assert not album_with_songs["album"].songs.all()
+
+    def test_remove_songs_from_albums(self, api_client: APIClient, albums_with_songs: dict):
+        for index, album in enumerate(albums_with_songs["albums"]):
+            for song in albums_with_songs["songs"][0:3] if index == 0 else albums_with_songs["songs"][3:]:
+                response = api_client.delete(
+                    self.url(kwargs={"pk": album.id}), data={"song": song.id}
+                )
+                assert response.status_code == 204
+                assert not Album.objects.get(pk=album.id).songs.filter(song__pk=song.id)
