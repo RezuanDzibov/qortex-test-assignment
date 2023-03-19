@@ -245,3 +245,12 @@ class TestRemoveSongFromAlbum:
         )
         assert response.status_code == 204
         assert not Album.objects.get(pk=album_with_song[0].id).songs.filter(song__pk=album_with_song[1].id)
+
+    @pytest.mark.parametrize("album_with_songs", [2], indirect=True)
+    def test_remove_songs_from_album(self, api_client: APIClient, album_with_songs: dict):
+        for song in album_with_songs["songs"]:
+            response = api_client.delete(
+                self.url(kwargs={"pk": album_with_songs["album"].id}), data={"song": song.id}
+            )
+            assert response.status_code == 204
+        assert not album_with_songs["album"].songs.all()
