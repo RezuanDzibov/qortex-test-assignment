@@ -263,3 +263,9 @@ class TestRemoveSongFromAlbum:
                 )
                 assert response.status_code == 204
                 assert not Album.objects.get(pk=album.id).songs.filter(song__pk=song.id)
+
+    def test_none_album_exist(self, db, api_client: APIClient):
+        response = api_client.delete(
+            self.url(kwargs={"pk": 1000}), data={"song": 1000}
+        )
+        assert response.status_code == 404
