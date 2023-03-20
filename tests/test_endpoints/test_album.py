@@ -269,3 +269,9 @@ class TestRemoveSongFromAlbum:
             self.url(kwargs={"pk": 1000}), data={"song": 1000}
         )
         assert response.status_code == 404
+
+    def test_not_exists_album(self, api_client: APIClient, albums_with_songs: dict):
+        response = api_client.delete(
+            self.url(kwargs={"pk": 1000})
+        )
+        assert response.status_code == 404
