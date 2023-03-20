@@ -300,3 +300,10 @@ class TestRemoveSongFromAlbum:
             self.url(kwargs={"pk": 1000}), data={"song": 1000}
         )
         assert response.status_code == 404
+
+    def test_with_not_exists_field_in_data(self, api_client: APIClient, album_with_song: list):
+        response = api_client.delete(
+            self.url(kwargs={"pk": album_with_song[0].id}),
+            data={"song": album_with_song[1].id, "field": "invalid value"}
+        )
+        assert response.status_code == 204
