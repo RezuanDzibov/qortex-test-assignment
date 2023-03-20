@@ -272,7 +272,7 @@ class TestRemoveSongFromAlbum:
 
     def test_not_exists_album(self, api_client: APIClient, albums_with_songs: dict):
         response = api_client.delete(
-            self.url(kwargs={"pk": 1000})
+            self.url(kwargs={"pk": 1000}), data={"song": 1000}
         )
         assert response.status_code == 404
 
@@ -307,3 +307,9 @@ class TestRemoveSongFromAlbum:
             data={"song": album_with_song[1].id, "field": "invalid value"}
         )
         assert response.status_code == 204
+
+    def test_with_invalid_data(self, api_client: APIClient, album: Album):
+        response = api_client.delete(
+            self.url(kwargs={"pk": album.id}), data={"field": "invalid value"}
+        )
+        assert response.status_code == 400
