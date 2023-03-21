@@ -35,3 +35,7 @@ class TestRetrieveSong:
         assert response.status_code == 200
         assert response.data == SongRetrieveSerializer(song).data
 
+    def test_multiple_exist(self, api_client: APIClient, songs: [Song]):
+        response = api_client.get(self.url(kwargs={"pk": songs[1].id}))
+        assert response.status_code
+        assert response.data == SongRetrieveSerializer(songs[1]).data
