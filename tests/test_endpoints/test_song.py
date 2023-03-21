@@ -18,3 +18,7 @@ class TestCreateSong:
     def test_with_invalid_data(self, db, api_client: APIClient):
         response = api_client.post(self.url, data={"title": "a" * 256})
         assert response.status_code == 400
+
+    def test_with_not_exists_field(self, db, api_client: APIClient):
+        response = api_client.post(self.url, data={"field": "value"})
+        assert response.status_code == 400
