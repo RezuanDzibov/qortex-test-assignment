@@ -120,3 +120,10 @@ def artists(request, db):
     else:
         artists = func(randint(2, 6))
     return artists
+
+
+@pytest.fixture(scope="function")
+def built_song():
+    song = factories.SongFactory.build()
+    return song
+
