@@ -39,3 +39,8 @@ class TestRetrieveSong:
         response = api_client.get(self.url(kwargs={"pk": songs[1].id}))
         assert response.status_code
         assert response.data == SongRetrieveSerializer(songs[1]).data
+
+    def test_none_exist(self, db, api_client: APIClient):
+        response = api_client.get(self.url(kwargs={"pk": 1000}))
+        assert response.status_code == 404
+
