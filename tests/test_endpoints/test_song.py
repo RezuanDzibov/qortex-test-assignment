@@ -66,3 +66,38 @@ class TestListSong:
         response = api_client.get(self.url)
         assert response.status_code == 200
         assert dict(response.data[0]) == SongSerializer(instance=song).data
+
+
+class TestUpdateSong:
+    url = partial(reverse, "songs-detail")
+
+    def test_successful(self, api_client: APIClient, song: Song):
+        title = "title"
+        song.title = title
+        response = api_client.put(self.url(kwargs={"pk": song.id}), data={"title": title})
+        assert response.status_code == 200
+        assert response.data == SongSerializer(instance=song).data
+
+    def test_multiple_exist_successful(self, api_client: APIClient, songs: [Song]):
+        song = songs[0]
+        title = "title"
+        song.title = title
+        response = api_client.put(self.url(kwargs={"pk": song.id}), data={"title": title})
+        assert response.status_code == 200
+        assert response.data == SongSerializer(instance=song).data
+
+    def test_with_invalid_data(self, api_client: APIClient, song: Song):
+        response = api_client.put(self.url(kwargs={"pk": song.id}), data={"title": "s" * 256})
+        assert response.status_code == 400
+
+    def test_none_exist(self, db, api_client: APIClient):
+        response = api_client.put(self.url(kwargs={"pk": 1}), data={"title": "title"})
+        assert response.status_code == 404
+
+    def test_not_exists(self, api_client: APIClient, songs: [Song]):
+        response = api_client.put(self.url(kwargs={"pk": 1000}), data={"title": "title"})
+        assert response.status_code == 404
+
+    def test_not_exists_with_invalid_data(self, api_client: APIClient, songs: [Song]):
+        response = api_client.put(self.url(kwargs={"pk": 1000}), data={"title": "a" * 256})
+        assert response.status_code == 404
