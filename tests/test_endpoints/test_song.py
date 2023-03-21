@@ -28,4 +28,10 @@ class TestCreateSong:
 
 
 class TestRetrieveSong:
-    pass
+    url = partial(reverse, "songs-detail")
+
+    def test_get_one(self, api_client: APIClient, song: Song):
+        response = api_client.get(self.url(kwargs={"pk": song.id}))
+        assert response.status_code == 200
+        assert response.data == SongRetrieveSerializer(song).data
+
