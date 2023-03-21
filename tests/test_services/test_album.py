@@ -78,7 +78,7 @@ class TestRemoveSongFromAlbum:
 
     def test_not_exits_album(self, song: Song):
         with pytest.raises(Http404) as exc:
-            services.remove_song_from_album(data={"album": 1, song: song.id})
+            services.remove_song_from_album(data={"album": 1, "song": song.id})
         assert isinstance(exc.value, Http404)
 
     def test_not_exists_song(self, album: Album):

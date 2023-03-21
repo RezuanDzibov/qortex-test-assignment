@@ -234,3 +234,82 @@ class TestAddSongToAlbum:
     def test_with_invalid_data(self, api_client: APIClient, album: Album):
         response = api_client.post(self.url(kwargs={"pk": album.id}), data={"song": "invalid song"})
         assert response.status_code == 400
+
+
+class TestRemoveSongFromAlbum:
+    url = partial(reverse, "remove_song_from_album")
+
+    def test_remove_song(self, api_client: APIClient, album_with_song: list):
+        response = api_client.delete(
+            self.url(kwargs={"pk": album_with_song[0].id}), data={"song": album_with_song[1].id}
+        )
+        assert response.status_code == 204
+        assert not Album.objects.get(pk=album_with_song[0].id).songs.filter(song__pk=album_with_song[1].id)
+
+    @pytest.mark.parametrize("album_with_songs", [2], indirect=True)
+    def test_remove_songs_from_album(self, api_client: APIClient, album_with_songs: dict):
+        for song in album_with_songs["songs"]:
+            response = api_client.delete(
+                self.url(kwargs={"pk": album_with_songs["album"].id}), data={"song": song.id}
+            )
+            assert response.status_code == 204
+        assert not album_with_songs["album"].songs.all()
+
+    def test_remove_songs_from_albums(self, api_client: APIClient, albums_with_songs: dict):
+        for index, album in enumerate(albums_with_songs["albums"]):
+            for song in albums_with_songs["songs"][0:3] if index == 0 else albums_with_songs["songs"][3:]:
+                response = api_client.delete(
+                    self.url(kwargs={"pk": album.id}), data={"song": song.id}
+                )
+                assert response.status_code == 204
+                assert not Album.objects.get(pk=album.id).songs.filter(song__pk=song.id)
+
+    def test_none_album_exist(self, db, api_client: APIClient):
+        response = api_client.delete(
+            self.url(kwargs={"pk": 1000}), data={"song": 1000}
+        )
+        assert response.status_code == 404
+
+    def test_not_exists_album(self, api_client: APIClient, albums_with_songs: dict):
+        response = api_client.delete(
+            self.url(kwargs={"pk": 1000}), data={"song": 1000}
+        )
+        assert response.status_code == 404
+
+    def test_not_exists_song(self, api_client: APIClient, album_with_song: list):
+        response = api_client.delete(
+            self.url(kwargs={"pk": album_with_song[0].id}), data={"song": 1000}
+        )
+        assert response.status_code == 404
+
+    def test_not_related_song_to_album(self, api_client: APIClient, album_with_songs: dict, song: Song):
+        response = api_client.delete(
+            self.url(kwargs={"pk": album_with_songs["album"].id}), data={"song": song.id}
+        )
+        assert response.status_code == 404
+
+    def test_none_song_exist(self, api_client: APIClient, albums: list):
+        album = albums[0]
+        response = api_client.delete(
+            self.url(kwargs={"pk": album.id}), data={"song": 1000}
+        )
+        assert response.status_code == 404
+
+    def test_song_and_album_not_exist(self, db, api_client: APIClient):
+        response = api_client.delete(
+            self.url(kwargs={"pk": 1000}), data={"song": 1000}
+        )
+        assert response.status_code == 404
+
+    def test_with_not_exists_field_in_data(self, api_client: APIClient, album_with_song: list):
+        response = api_client.delete(
+            self.url(kwargs={"pk": album_with_song[0].id}),
+            data={"song": album_with_song[1].id, "field": "invalid value"}
+        )
+        assert response.status_code == 204
+
+    def test_with_invalid_data(self, api_client: APIClient, album: Album):
+        response = api_client.delete(
+            self.url(kwargs={"pk": album.id}), data={"field": "invalid value"}
+        )
+        assert response.status_code == 400

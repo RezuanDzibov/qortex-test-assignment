@@ -76,7 +76,12 @@ def album_with_song(album: models.Album, song: models.Song) -> [models.Album, mo
 
 
 @pytest.fixture(scope="function")
-def album_with_songs(album: models.Album, songs: [models.Song]) -> dict:
+def album_with_songs(request, album: models.Album) -> dict:
+    func = partial(factories.SongFactory.create_batch)
+    if hasattr(request, "param") and isinstance(request.param, int) and request.param > 0:
+        songs = func(request.param)
+    else:
+        songs = func(randint(2, 6))
     album_songs = [models.AlbumSong(album=album, song=song) for song in songs]
     with transaction.atomic():
         for album_song in album_songs:
