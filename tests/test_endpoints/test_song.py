@@ -4,7 +4,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from songs.models import Song
-from songs.serializers import SongRetrieveSerializer
+from songs.serializers import SongRetrieveSerializer, SongSerializer
 
 
 class TestCreateSong:
@@ -47,3 +47,22 @@ class TestRetrieveSong:
     def test_not_exists(self, api_client: APIClient, songs: [Song]):
         response = api_client.get(self.url(kwargs={"pk": 1000}))
         assert response.status_code == 404
+
+
+class TestListSong:
+    url = reverse("songs-list")
+
+    def test_multiple_exist(self, api_client: APIClient, songs: [Song]):
+        response = api_client.get(self.url)
+        assert response.status_code == 200
+        assert response.data == SongSerializer(many=True, instance=songs).data
+
+    def test_none_exist(self, db, api_client: APIClient):
+        response = api_client.get(self.url)
+        assert response.status_code == 200
+        assert not response.data
+
+    def test_one_exists(self, api_client: APIClient, song: Song):
+        response = api_client.get(self.url)
+        assert response.status_code == 200
+        assert dict(response.data[0]) == SongSerializer(instance=song).data
