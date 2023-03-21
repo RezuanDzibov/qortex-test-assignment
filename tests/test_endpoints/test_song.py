@@ -44,3 +44,6 @@ class TestRetrieveSong:
         response = api_client.get(self.url(kwargs={"pk": 1000}))
         assert response.status_code == 404
 
+    def test_not_exists(self, api_client: APIClient, songs: [Song]):
+        response = api_client.get(self.url(kwargs={"pk": 1000}))
+        assert response.status_code == 404
