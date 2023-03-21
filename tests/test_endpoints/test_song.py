@@ -14,3 +14,7 @@ class TestCreateSong:
         response_data.pop("id")
         assert response.status_code == 201
         assert response_data == data
+
+    def test_with_invalid_data(self, db, api_client: APIClient):
+        response = api_client.post(self.url, data={"title": "a" * 256})
+        assert response.status_code == 400
