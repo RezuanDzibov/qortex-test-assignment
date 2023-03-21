@@ -1,0 +1,2 @@
+class TestCreateSong:
+    pass
