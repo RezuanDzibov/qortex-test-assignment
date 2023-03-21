@@ -61,3 +61,8 @@ class TestListSong:
         response = api_client.get(self.url)
         assert response.status_code == 200
         assert not response.data
+
+    def test_one_exists(self, api_client: APIClient, song: Song):
+        response = api_client.get(self.url)
+        assert response.status_code == 200
+        assert dict(response.data[0]) == SongSerializer(instance=song).data
