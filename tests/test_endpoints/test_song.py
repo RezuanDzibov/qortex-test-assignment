@@ -1,7 +1,10 @@
+from functools import partial
+
 from django.urls import reverse
 from rest_framework.test import APIClient
 
 from songs.models import Song
+from songs.serializers import SongRetrieveSerializer
 
 
 class TestCreateSong:
@@ -22,3 +25,7 @@ class TestCreateSong:
     def test_with_not_exists_field(self, db, api_client: APIClient):
         response = api_client.post(self.url, data={"field": "value"})
         assert response.status_code == 400
+
+
+class TestRetrieveSong:
+    pass
