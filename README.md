@@ -1,19 +1,38 @@
 # Привет ✋.
-### Вам нужно скопировать репозиторий.
-`git clone https://github.com/RezuanDzibov/qortex-test-assignment`
 
-### Зайти в директорию проекта.
-`cd qortex-test-assignment`
+Для запуска проекта выполните следующие шаги:
 
-### Создать файл .env и заполнить его. Или использовать .env.example с помощью такой команды.
-Windows: `copy .env.example .env`\
-Linux/MacOS: `cp .env.example .env`
+1. Скопируйте репозиторий:
 
-### Запуск.
-`docker-compose up --build`
-## Есть тестовый админ пользователь. И добавлено несколько тестовых объектов.
-`username: admin` \
-`password: admin`
-### Сама админика: http://127.0.0.1:8000/admin/
-## А по ссылке http://127.0.0.1:8000/swagger/ можно подергать ручки swagger-ом.
-# Хорошего дня вам.
+git clone https://github.com/RezuanDzibov/qortex-test-assignment
+
+
+2. Перейдите в директорию проекта:
+
+cd qortex-test-assignment
+
+
+3. Создайте файл `.env` и заполните его или использовать `.env.example` следующей командой:
+
+Windows
+copy .env.example .env
+
+Linux/MacOS
+cp .env.example .env
+
+
+4. Запустите проект:
+
+docker-compose up --build
+
+
+В проекте есть тестовый админ пользователь и несколько тестовых объектов:
+
+- `username: admin`
+- `password: admin`
+
+Для доступа к админке перейдите по ссылке: http://127.0.0.1:8000/admin/
+
+Чтобы использовать Swagger API, перейдите по ссылке: http://127.0.0.1:8000/swagger/
+
+Желаем вам хорошего дня!
