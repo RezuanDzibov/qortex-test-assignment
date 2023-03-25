@@ -18,6 +18,7 @@ factory-boy = "^3.2.1"
 pytest-factoryboy = "^2.5.1"
 pytest-django = "^4.5.2"
 flake8 = "^6.0.0"
+python-decouple = "^3.8"
 
 
 [build-system]
